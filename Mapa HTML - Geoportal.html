@@ -35,7 +35,7 @@
 <body>
 
 <div id='map'>
-<script src="Granica_Mapy_GEOJS.js"></script>
+<script src="Granica_Geoportalu.js"></script>
 <script>
 /*
 var Ikona = L.icon({
@@ -50,7 +50,7 @@ maxZoom: 19,
 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-L.imageOverlay('Mapa3.png', [[52.293208224840,21.003919155542], [52.267935548808,20.968176371000
+L.imageOverlay('Orto.png', [[52.293208224840,21.003919155542], [52.267935548808,20.968176371000
 ]]).addTo(map);
 function Styl_Granic(feature) {
   return {
@@ -64,3 +64,4 @@ L.geoJSON(granica,{style:Styl_Granic}).addTo(map);
 </script>
 </div>
 </body>
+
