@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+<!-- leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+<!--  -->
+	#map{
+	height: 100vh;
+	}
+
+    #UI {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #UI div {
+      background: #B28E00;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    #UI div:hover {
+      background: #007700;
+    }
+  </style>
+<script>
+
+</script>
+</head>
+<body>
+
+<div id='map'>
+<script src="Granica_Mapy_GEOJS.js"></script>
+<script>
+/*
+var Ikona = L.icon({
+    iconUrl: 'Punkt_.svg',
+    iconSize:     [38, 95]
+    });
+*/
+var map = L.map('map').setView([52.2829,20.9863],15);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19,
+attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+L.imageOverlay('Mapa3.png', [[52.293208224840,21.003919155542], [52.267935548808,20.968176371000
+]]).addTo(map);
+function Styl_Granic(feature) {
+  return {
+    fillColor: "#FFFFFF",
+    fillOpacity: 0,
+    color: '#000000',
+    weight: 5,
+  };
+}
+L.geoJSON(granica,{style:Styl_Granic}).addTo(map);
+</script>
+</div>
+</body>
