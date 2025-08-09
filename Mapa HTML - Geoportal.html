@@ -4,28 +4,44 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
-<!--  -->
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
 	#map{
 	height: 100vh;
+	position: relative;
+    z-index: 0;
 	}
 
     #UI {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+	text-align: center;
+	color: white;
+	background: rgba(155, 255, 128, 0.5); 
+    position: fixed;
+    top: 10%;
+    left: 75%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     }
 
     #UI div {
-      background: #B28E00;
-      color: white;
-      padding: 10px 15px;
+
+	  flex-direction: row;
+      padding: 15px;
       border-radius: 10px;
-      text-align: center;
+      text-align: left;
       cursor: pointer;
     }
-
+	#UI img {
+		width:20px;
+		height:20px;
+		padding-right: 15px;
+	}
     #UI div:hover {
-      background: #007700;
+      background: rgba(155, 255, 128, 1);
     }
   </style>
 <script>
@@ -35,23 +51,17 @@
 <body>
 
 <div id='map'>
+</div>
 <script src="Granica_Geoportalu.js"></script>
 <script>
-/*
-var Ikona = L.icon({
-    iconUrl: 'Punkt_.svg',
-    iconSize:     [38, 95]
-    });
-*/
+	// mapa
 var map = L.map('map').setView([52.2829,20.9863],15);
-
+	// podkład
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 maxZoom: 19,
 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-
-L.imageOverlay('Orto.png', [[52.293208224840,21.003919155542], [52.267935548808,20.968176371000
-]]).addTo(map);
+	// style
 function Styl_Granic(feature) {
   return {
     fillColor: "#FFFFFF",
@@ -60,8 +70,57 @@ function Styl_Granic(feature) {
     weight: 5,
   };
 }
-L.geoJSON(granica,{style:Styl_Granic}).addTo(map);
+function Styl_Chodników(feature) {
+  return {
+    color: '#A6A486',
+    weight: 3,
+  };
+}
+	// warstwy
+
+const Ortofotomapa = L.imageOverlay('Orto.png', [[52.293208224840,21.003919155542], [52.267935548808,20.968176371000
+]])
+const Granica =L.geoJSON(granica,{style:Styl_Granic})
+const Chodniki = L.geoJSON(chodniki,{style:Styl_Chodników});
+	// dodanie do mapy
+Ortofotomapa.addTo(map);
+Granica.addTo(map);
+var lista_warstw = [Ortofotomapa, Granica, Chodniki];
+var lista_widoczności = [true, true, false];
+var lista_nazw_warstw = ["Ortofotomapa", "Granica","Chodniki"];
+var obrazek = "";
+	// Zmiana widoczności warstwy
+function zmien_widocznosc_warstwy(nr_Warstwy){
+	console.log("chodniki usunięte")
+	if (lista_widoczności[nr_Warstwy]){
+		map.removeLayer(lista_warstw[nr_Warstwy]);
+		var div = document.getElementById(lista_nazw_warstw[nr_Warstwy]);
+		div.innerHTML = '<img src="Nie_Widać.PNG"/><span>'+lista_nazw_warstw[nr_Warstwy]+'</span>';
+		}
+	else{
+	map.addLayer(lista_warstw[nr_Warstwy]);
+	var div = document.getElementById(lista_nazw_warstw[nr_Warstwy]);
+	div.innerHTML = '<img src="Widać.PNG"/><span>'+lista_nazw_warstw[nr_Warstwy]+'</span>';
+	}
+	lista_widoczności[nr_Warstwy] = !lista_widoczności[nr_Warstwy];
+}
+	// rysowanie UI
+function rysuj_UI(){
+	var div = document.getElementById("UI");
+	var UI = "<h3>Warstwy</h3>"
+	for(var i=0;i<3;i++){
+		if (lista_widoczności[i]){
+			obrazek = "<img src='Widać.PNG'/>";
+		}
+		else{
+			obrazek = "<img src='Nie_Widać.PNG'/>";
+		}
+		UI += '<div id="'+lista_nazw_warstw[i]+'" onclick="zmien_widocznosc_warstwy('+String(i)+')">'+obrazek+'<span>'+lista_nazw_warstw[i]+'</span></div>';
+	}
+	div.innerHTML = UI
+}
+rysuj_UI()
 </script>
-</div>
 </body>
+
 
