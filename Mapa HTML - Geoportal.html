@@ -76,7 +76,6 @@ function Styl_Chodników(feature) {
   };
 }
 	// warstwy
-
 const Ortofotomapa = L.imageOverlay('Orto.png', [[52.293208224840,21.003919155542], [52.267935548808,20.968176371000
 ]])
 const Granica =L.geoJSON(granica,{style:Styl_Granic})
@@ -84,6 +83,7 @@ const Chodniki = L.geoJSON(chodniki,{style:Styl_Chodników});
 	// dodanie do mapy
 Ortofotomapa.addTo(map);
 Granica.addTo(map);
+		// lista warstw
 var lista_warstw = [Ortofotomapa, Granica, Chodniki];
 var lista_widoczności = [true, true, false];
 var lista_nazw_warstw = ["Ortofotomapa", "Granica","Chodniki"];
@@ -121,6 +121,7 @@ function rysuj_UI(){
 rysuj_UI()
 </script>
 </body>
+
 
 
 
